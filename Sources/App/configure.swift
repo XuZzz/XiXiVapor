@@ -29,4 +29,15 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     var migrations = MigrationConfig()
     migrations.add(model: Todo.self, database: .sqlite)
     services.register(migrations)
+    
+    /// Create default content config
+    var contentConfig = ContentConfig.default()
+    
+    /// Create custom JSON encoder
+    let jsonEncoder = JSONEncoder()
+    jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
+    
+    /// Register JSON encoder and content config
+    contentConfig.use(encoder: jsonEncoder, for: .json)
+    services.register(contentConfig)
 }
